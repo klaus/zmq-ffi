@@ -1,6 +1,6 @@
-package ZMQ::FFI::ZMQ3::Socket;
+package ZMQ::FFI::ZMQ4::Socket;
 {
-  $ZMQ::FFI::ZMQ3::Socket::VERSION = '0.07';
+  $ZMQ::FFI::ZMQ4::Socket::VERSION = '0.07';
 }
 
 use Moo;
@@ -12,10 +12,10 @@ extends q(ZMQ::FFI::SocketBase);
 
 with q(ZMQ::FFI::SocketRole);
 
-has zmq3_ffi => (
+has zmq4_ffi => (
     is      => 'ro',
     lazy    => 1,
-    builder => '_init_zmq3_ffi',
+    builder => '_init_zmq4_ffi',
 );
 
 sub send {
@@ -25,7 +25,7 @@ sub send {
 
     $self->check_error(
         'zmq_send',
-        $self->zmq3_ffi->{zmq_send}->(
+        $self->zmq4_ffi->{zmq_send}->(
             $self->_socket, $msg, length($msg), $flags
         )
     );
@@ -46,7 +46,7 @@ sub recv {
     );
 
     my $msg_size =
-        $self->zmq3_ffi->{zmq_msg_recv}->($msg_ptr, $self->_socket, $flags);
+        $self->zmq4_ffi->{zmq_msg_recv}->($msg_ptr, $self->_socket, $flags);
 
     $self->check_error('zmq_msg_recv', $msg_size);
 
@@ -59,7 +59,7 @@ sub recv {
     return $content_ptr->tostr($msg_size);
 }
 
-sub _init_zmq3_ffi {
+sub _init_zmq4_ffi {
     my $self = shift;
 
     my $ffi    = {};

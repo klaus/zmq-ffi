@@ -1,4 +1,7 @@
 package ZMQ::FFI;
+{
+  $ZMQ::FFI::VERSION = '0.07';
+}
 # ABSTRACT: zeromq bindings using libffi and FFI::Raw
 
 use ZMQ::FFI::Util qw(zmq_soname zmq_version);
@@ -23,15 +26,29 @@ sub new {
         require ZMQ::FFI::ZMQ2::Context;
         return ZMQ::FFI::ZMQ2::Context->new(%args);
     }
-    else {
+    elsif ($major == 3) {
         require ZMQ::FFI::ZMQ3::Context;
         return ZMQ::FFI::ZMQ3::Context->new(%args);
+    }
+    elsif ($major == 4) {
+        require ZMQ::FFI::ZMQ4::Context;
+        return ZMQ::FFI::ZMQ4::Context->new(%args);
     }
 };
 
 1;
 
 __END__
+
+=pod
+
+=head1 NAME
+
+ZMQ::FFI - zeromq bindings using libffi and FFI::Raw
+
+=head1 VERSION
+
+version 0.07
 
 =head1 SYNOPSIS
 
@@ -194,7 +211,6 @@ __END__
     # 3.x context
     my $ctx = ZMQ::FFI->new( soname => 'libzmq.so.3' );
     my ($major, $minor, $patch) = $ctx->version;
-
 
 =head1 DESCRIPTION
 
@@ -366,8 +382,27 @@ case of an error it will die with the plain english system error message.
 
 =head1 SEE ALSO
 
-=for :list
-* L<ZMQ::FFI::Constants>
-* L<ZMQ::FFI::Util>
-* L<FFI::Raw>
+=over 4
 
+=item *
+
+L<ZMQ::FFI::Constants>
+
+=item *
+
+L<ZMQ::FFI::Util>
+
+=back
+
+=head1 AUTHOR
+
+Dylan Cali <calid1984@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Dylan Cali.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

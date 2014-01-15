@@ -1,6 +1,6 @@
-package ZMQ::FFI::ZMQ3::Context;
+package ZMQ::FFI::ZMQ4::Context;
 {
-  $ZMQ::FFI::ZMQ3::Context::VERSION = '0.07';
+  $ZMQ::FFI::ZMQ4::Context::VERSION = '0.07';
 }
 
 use Moo;
@@ -9,7 +9,7 @@ use namespace::autoclean;
 use FFI::Raw;
 use Carp;
 
-use ZMQ::FFI::ZMQ3::Socket;
+use ZMQ::FFI::ZMQ4::Socket;
 use ZMQ::FFI::Constants qw(ZMQ_IO_THREADS ZMQ_MAX_SOCKETS);
 
 use Try::Tiny;
@@ -68,7 +68,7 @@ sub set {
 sub socket {
     my ($self, $type) = @_;
 
-    return ZMQ::FFI::ZMQ3::Socket->new(
+    return ZMQ::FFI::ZMQ4::Socket->new(
         ctx     => $self,
         soname  => $self->soname,
         type    => $type

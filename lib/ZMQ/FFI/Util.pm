@@ -1,4 +1,7 @@
 package ZMQ::FFI::Util;
+{
+  $ZMQ::FFI::Util::VERSION = '0.07';
+}
 
 # ABSTRACT: zmq convenience functions
 
@@ -77,6 +80,16 @@ sub zmq_version {
 
 __END__
 
+=pod
+
+=head1 NAME
+
+ZMQ::FFI::Util - zmq convenience functions
+
+=head1 VERSION
+
+version 0.07
+
 =head1 SYNOPSIS
 
     use ZMQ::FFI::Util q(zmq_soname zmq_version)
@@ -101,5 +114,23 @@ If C<$soname> cannot be resolved undef is returned
 
 =head1 SEE ALSO
 
-=for :list
-* L<ZMQ::FFI>
+=over 4
+
+=item *
+
+L<ZMQ::FFI>
+
+=back
+
+=head1 AUTHOR
+
+Dylan Cali <calid1984@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Dylan Cali.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

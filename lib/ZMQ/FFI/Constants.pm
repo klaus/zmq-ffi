@@ -1,4 +1,7 @@
 package ZMQ::FFI::Constants;
+{
+  $ZMQ::FFI::Constants::VERSION = '0.07';
+}
 
 # ABSTRACT: Generated module of zmq constants. All constants, all versions.
 
@@ -179,6 +182,16 @@ sub ZMQ_XSUB { 10 }
 
 __END__
 
+=pod
+
+=head1 NAME
+
+ZMQ::FFI::Constants - Generated module of zmq constants. All constants, all versions.
+
+=head1 VERSION
+
+version 0.07
+
 =head1 SYNOPSIS
 
     use ZMQ::FFI::Constants qw(ZMQ_LINGER ZMQ_FD);
@@ -195,6 +208,23 @@ zeromq3-x git repos at L<https://github.com/zeromq>.
 
 =head1 SEE ALSO
 
-=for :list
-* L<ZMQ::FFI>
+=over 4
 
+=item *
+
+L<ZMQ::FFI>
+
+=back
+
+=head1 AUTHOR
+
+Dylan Cali <calid1984@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Dylan Cali.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
