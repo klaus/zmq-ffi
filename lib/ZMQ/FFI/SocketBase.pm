@@ -91,15 +91,21 @@ sub send_multipart {
 sub recv_multipart {
     my ($self, $flags) = @_;
 
+
     my @parts = ( $self->recv($flags) );
+
+    warn 'done with part 1 recv ' . join(',' , @parts);
 
     my ($major) = $self->version;
     my $type    = $major == 2 ? 'int64_t' : 'int';
 
+my $cnt;
     while ( $self->get(ZMQ_RCVMORE, $type) ){
         push @parts, $self->recv($flags);
+        warn 'done with part ' . scalar @parts;
     }
 
+    warn "NOW RETURNING @parts";
     return @parts;
 }
 
