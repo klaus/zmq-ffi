@@ -50,18 +50,21 @@ sub recv {
 
     $self->check_error('zmq_msg_recv', $msg_size);
 
-    my $data_ptr    = $ffi->{zmq_msg_data}->($msg_ptr);
-    my $content_ptr = FFI::Raw::memptr($msg_size);
+    my $rv;
+    if ($msg_size) {
+        my $data_ptr    = $ffi->{zmq_msg_data}->($msg_ptr);
+        my $content_ptr = FFI::Raw::memptr($msg_size);
 
-    #warn "for memcpy $msg_size";
+        $ffi->{memcpy}->($content_ptr, $data_ptr, $msg_size);
+        $rv = $content_ptr->tostr($msg_size);
+    }
+    else {
+        $rv = '';
+    }
 
-    $ffi->{memcpy}->($content_ptr, $data_ptr, $msg_size);
     $ffi->{zmq_msg_close}->($msg_ptr);
 
-    my $rv =  $content_ptr->tostr($msg_size);
-    #warn "RES: >$rv<";
-    return $msg_size ? $rv : '';
-#    return $rv;
+    return $rv;
 }
 
 sub _init_zmq4_ffi {
