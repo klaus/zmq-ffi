@@ -7,9 +7,7 @@ use FFI::Raw;
 
 extends q(ZMQ::FFI::SocketBase);
 
-with q(ZMQ::FFI::SocketRole);
-
-has zmq2_ffi => (
+has _zmq2_ffi => (
     is      => 'ro',
     lazy    => 1,
     builder => '_init_zmq2_ffi',
@@ -18,12 +16,19 @@ has zmq2_ffi => (
 sub send {
     my ($self, $msg, $flags) = @_;
 
-    my $ffi      = $self->ffi;
-    my $zmq2_ffi = $self->zmq2_ffi;
+    my $ffi      = $self->_ffi;
+    my $zmq2_ffi = $self->_zmq2_ffi;
 
     $flags //= 0;
 
-    my $bytes_size = length($msg);
+
+    my $length;
+    {
+        use bytes;
+        $length = length($msg);
+    };
+
+    my $bytes_size = $length;
     my $bytes      = pack "a$bytes_size", $msg;
     my $bytes_ptr  = unpack('L!', pack('P', $bytes));
 
@@ -35,7 +40,7 @@ sub send {
     );
 
     my $msg_data_ptr = $ffi->{zmq_msg_data}->($msg_ptr);
-    $self->ffi->{memcpy}->($msg_data_ptr, $bytes_ptr, $bytes_size);
+    $self->_ffi->{memcpy}->($msg_data_ptr, $bytes_ptr, $bytes_size);
 
     $self->check_error(
         'zmq_send',
@@ -48,8 +53,8 @@ sub send {
 sub recv {
     my ($self, $flags) = @_;
 
-    my $ffi      = $self->ffi;
-    my $zmq2_ffi = $self->zmq2_ffi;
+    my $ffi      = $self->_ffi;
+    my $zmq2_ffi = $self->_zmq2_ffi;
 
     $flags //= 0;
 
@@ -74,7 +79,7 @@ sub recv {
     if ($msg_size) {
         my $content_ptr = FFI::Raw::memptr($msg_size);
 
-        $self->ffi->{memcpy}->($content_ptr, $data_ptr, $msg_size);
+        $self->_ffi->{memcpy}->($content_ptr, $data_ptr, $msg_size);
 
 
         $ffi->{memcpy}->($content_ptr, $data_ptr, $msg_size);
